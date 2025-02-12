@@ -152,7 +152,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
   },
   contentContainer: {
-    paddingBottom: 150,  // Increase padding to ensure scrolling is possible when items are many
+    paddingBottom: 150,  
   },
   header: {
     fontSize: 24,
