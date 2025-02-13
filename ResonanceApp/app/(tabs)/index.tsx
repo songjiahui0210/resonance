@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { StyleSheet, View, Text, TextInput, Button, ScrollView, TouchableOpacity, FlatList } from 'react-native';
 
-const GEMINI_API_KEY = 'AIzaSyCczzTtUSstlsoktQtekaA19eDkQHWLGhI';
+const GEMINI_API_KEY = 'YOUR_API_KEY';
 const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${GEMINI_API_KEY}`;
 
 function App() {
