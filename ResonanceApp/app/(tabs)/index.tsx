@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { StyleSheet, View, Text, TextInput, Button, ScrollView, TouchableOpacity, FlatList } from 'react-native';
 
-const GEMINI_API_KEY = 'YOUR_API_KEY';
+const GEMINI_API_KEY = 'AIzaSyCczzTtUSstlsoktQtekaA19eDkQHWLGhI';
 const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${GEMINI_API_KEY}`;
 
 function App() {
@@ -36,7 +36,7 @@ function App() {
     const recipientText = customRecipient || selectedRecipient;
 
     const prompt = {
-      contents: [{ parts: [{ text: `The user is feeling "${emotionText}" and wants to communicate with "${recipientText}" in the "${scenarioText}" context. Generate a polite and helpful sentence that expresses their emotion appropriately.` }] }]
+      contents: [{ parts: [{ text: `The user is a young adults with language impairments and needs you to help them complete a message of expressing the feelings. The user is feeling "${emotionText}" and wants to communicate with "${recipientText}" in the "${scenarioText}" context. The scenario contexts are where the conversations will be based. Generate a considerate and clear text that the user can use to explain his true intentions in the situation, promoting a better understanding and maintaining a genuine atmosphere. Omit the user's or the recipient's name, and pretend you are writing for the user. So start with 'I'. Don't include any variable name starting with []. The recipient is whom the user is talking to. Also, generate the sentence in a natural tone just like young adults nowadays. Don't be too concise. Be natural and address context.` }] }]
     };
 
     try {
