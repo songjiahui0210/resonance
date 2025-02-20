@@ -2,8 +2,9 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { StyleSheet, View, Text, TextInput, Button, ScrollView, TouchableOpacity, FlatList, Clipboard, KeyboardAvoidingView, Platform} from 'react-native';
 import Slider from '@react-native-community/slider';
+import styles from './appStyles';
 
-const GEMINI_API_KEY = 'YOUR_API_KEY';
+const GEMINI_API_KEY = 'AIzaSyD-kdWP6u2Q-zlT-9DC5epl877QtobpuDk';
 const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${GEMINI_API_KEY}`;
 
 function App() {
@@ -217,73 +218,5 @@ function App() {
   );
 };
 
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    paddingTop: 50,
-    backgroundColor: '#fff',
-  },
-  contentContainer: {
-    paddingBottom: 150,  
-  },
-  header: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    marginBottom: 20,
-    textAlign: 'center',
-  },
-  sectionContainer: {
-    marginBottom: 20,
-  },
-  sectionTitle: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    marginBottom: 10,
-  },
-  tag: {
-    padding: 10,
-    margin: 5,
-    borderWidth: 1,
-    borderColor: '#ccc',
-    borderRadius: 20,
-    backgroundColor: '#f9f9f9',
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  selectedTag: {
-    backgroundColor: '#cceeff',
-  },
-  tagText: {
-    fontSize: 16,
-  },
-  input: {
-    width: '100%',
-    height: 40,
-    borderColor: 'gray',
-    borderWidth: 1,
-    marginBottom: 20,
-    padding: 10,
-  },
-  message: {
-    marginTop: 20,
-    padding: 10,
-    borderWidth: 1,
-    borderColor: '#ccc',
-  },
-  messageText: {
-    fontSize: 16,
-  },
-  sliderLabel: {
-    fontSize: 16,
-    color: '#333',
-    marginTop: 10,
-  },
-  slider: {
-    width: '100%',
-    height: 40,
-  },
-});
 
 export default App;
