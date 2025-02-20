@@ -1,13 +1,15 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { StyleSheet, View, Text, TextInput, Button, ScrollView, TouchableOpacity, FlatList } from 'react-native';
+import Slider from '@react-native-community/slider';
 
-const GEMINI_API_KEY = 'YOUR_API_KEY';
+const GEMINI_API_KEY = 'AIzaSyD-kdWP6u2Q-zlT-9DC5epl877QtobpuDk';
 const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${GEMINI_API_KEY}`;
 
 function App() {
   const [selectedEmotion, setSelectedEmotion] = useState('');
   const [customEmotion, setCustomEmotion] = useState('');
+  const [emotionIntensity, setEmotionIntensity] = useState(5);  
   const [selectedRecipient, setSelectedRecipient] = useState('');
   const [customRecipient, setCustomRecipient] = useState('');
   const [selectedScenario, setSelectedScenario] = useState('');
@@ -36,7 +38,7 @@ function App() {
     const recipientText = customRecipient || selectedRecipient;
 
     const prompt = {
-      contents: [{ parts: [{ text: `The user is a young adult with language impairments and needs you to help them complete a message of expressing the feelings. The user is feeling "${emotionText}" and wants to communicate with "${recipientText}" in the "${scenarioText}" context. The scenario contexts are where the conversations will be based. Generate a considerate and clear text that the user can use to explain his true intentions in the situation, promoting a better understanding and maintaining a genuine atmosphere. Omit the user's or the recipient's name, and pretend you are writing for the user. So start with 'I'. Don't include any variable name starting with []. The recipient is whom the user is talking to. Also, generate the sentence in a natural tone just like young adults nowadays. Don't be too concise. Be natural and address context.` }] }]
+      contents: [{ parts: [{ text: `The user is a young adult with language impairments and needs you to help them complete a message of expressing the feelings. The user is feeling "${emotionText}" with an intensity of ${emotionIntensity} and wants to communicate with "${recipientText}" in the "${scenarioText}" context. The scenario contexts are where the conversations will be based. Generate a considerate and clear text that the user can use to explain his true intentions in the situation, promoting a better understanding and maintaining a genuine atmosphere. Omit the user's or the recipient's name, and pretend you are writing for the user. So start with 'I'. Don't include any variable name starting with []. The recipient is whom the user is talking to. Also, generate the sentence in a natural tone just like young adults nowadays. Don't be too concise. Be natural and address context.` }] }]
     };
 
     try {
@@ -77,6 +79,22 @@ function App() {
             onChangeText={setCustomEmotion}
           />
         )}
+        {selectedEmotion && selectedEmotion !== 'Other' && (
+          <>
+            <Text style={styles.sliderLabel}>Level: {emotionIntensity}</Text>
+            <Slider
+                style={styles.slider}
+                minimumValue={1}
+                maximumValue={10}
+                step={1}
+                value={emotionIntensity}
+                onValueChange={setEmotionIntensity}
+                minimumTrackTintColor="#1fb28a"
+                maximumTrackTintColor="#d3d3d3"
+                thumbTintColor="#b9e4c9"
+              />
+          </>
+          )}
       </View>
 
       <View style={styles.sectionContainer}>
@@ -142,6 +160,9 @@ function App() {
         </View>
       ))}
     </ScrollView>
+
+        
+    
   );
 };
 
@@ -201,6 +222,15 @@ const styles = StyleSheet.create({
   },
   messageText: {
     fontSize: 16,
+  },
+  sliderLabel: {
+    fontSize: 16,
+    color: '#333',
+    marginTop: 10,
+  },
+  slider: {
+    width: '100%',
+    height: 40,
   },
 });
 
