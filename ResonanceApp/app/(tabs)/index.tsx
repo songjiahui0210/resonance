@@ -3,7 +3,7 @@ import axios from 'axios';
 import { StyleSheet, View, Text, TextInput, Button, ScrollView, TouchableOpacity, FlatList, Clipboard, KeyboardAvoidingView, Platform} from 'react-native';
 import Slider from '@react-native-community/slider';
 
-const GEMINI_API_KEY = 'AIzaSyD-kdWP6u2Q-zlT-9DC5epl877QtobpuDk';
+const GEMINI_API_KEY = 'YOUR_API_KEY';
 const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${GEMINI_API_KEY}`;
 
 function App() {
