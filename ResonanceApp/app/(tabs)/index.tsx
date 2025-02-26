@@ -4,8 +4,8 @@ import { StyleSheet, View, Text, TextInput, Button, ScrollView, TouchableOpacity
 import Slider from '@react-native-community/slider';
 import styles from './appStyles';
 
-const GEMINI_API_KEY = 'Your_API_Key';
-const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${GEMINI_API_KEY}`;
+const GEMINI_API_KEY = 'AIzaSyBPbgUjqjpO-cWV61Zs6xeypo-dSz2sCnY';
+const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_API_KEY}`;
 
 function App() {
   const [selectedEmotion, setSelectedEmotion] = useState('');
@@ -43,22 +43,23 @@ function App() {
     
 
     const prompt = {
-      contents: [{
-        parts: [{
-          text:
-        
-            `The user is a young adult with language impairments and needs you to help them complete a message of expressing the feelings. 
+    contents: [{
+      parts: [{
+        text:
+          `Assume you are writing for a young adult with language impairments and the user needs you to help them complete one message of expressing the feelings. 
             
             The user is feeling "${emotionText}" with a level of ${emotionIntensity} out of 10. With level 1, it means a very mild or subtle feeling. Level 10 means very strong feeling. The user wants to communicate with "${recipientText}" in the "${scenarioText}" context. The scenario contexts are where the conversations will be based with possible ${additionalText}.
             
-            Generate a considerate and clear text that the user can use to explain his or her true intentions in the situation, promoting a better understanding and maintaining a genuine atmosphere. Omit the user's or the recipient's name, and pretend you are writing for the user. So start with 'I'. Don't include any variable name starting with []. The recipient is whom the user is talking to.
+            Help the user write a considerate and clear text that the user can use to explain his or her true intentions in the situation, promoting a better understanding and maintaining a genuine atmosphere. Omit the user's or the recipient's name, and pretend you are writing for the user. So start with 'I'. Don't include any variable name starting with []. The recipient is whom the user is talking to.
 
             With the emotion level, don't mention it in numbers like "8 out of 10" in the text, but use words to express how intense the emotion is.
             
-            Also, generate the sentence in a natural tone just like young adults nowadays within the scenarios. Don't be too concise. Be natural and address context to best express the user's feelings.`
-        }]
+            Also, write the sentence in a natural tone just like young adults nowadays within the scenarios. Don't be too concise. Be natural and address context to best express the user's feelings. 
+            
+            `
       }]
-    };
+        }]
+  };
 
     try {
       const response = await axios.post(API_URL, prompt);
@@ -67,9 +68,12 @@ function App() {
       setLastMessage(generatedText);
       
     } catch (error) {
-      setMessages([...messages, { type: 'ai', text: "Sorry, it happens sometimes. Let me try again. " }]);
-      setLastMessage('');
-    }
+  const err = error as any;
+  console.error('Error while generating expression:', err.response ? err.response.data : err.message);
+  const errorMessage = error instanceof Error ? error.message : 'An unknown error occurred';
+  setMessages([...messages, { type: 'ai', text: `Error: ${errorMessage}` }]);
+  setLastMessage('');
+}
     setLoading(false);
   };
 
