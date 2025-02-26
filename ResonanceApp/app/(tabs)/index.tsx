@@ -45,18 +45,14 @@ function App() {
     const prompt = {
     contents: [{
       parts: [{
-        text:
-          `Assume you are writing for a young adult with language impairments and the user needs you to help them complete one message of expressing the feelings. 
-            
-            The user is feeling "${emotionText}" with a level of ${emotionIntensity} out of 10. With level 1, it means a very mild or subtle feeling. Level 10 means very strong feeling. The user wants to communicate with "${recipientText}" in the "${scenarioText}" context. The scenario contexts are where the conversations will be based with possible ${additionalText}.
-            
-            Help the user write a considerate and clear text that the user can use to explain his or her true intentions in the situation, promoting a better understanding and maintaining a genuine atmosphere. Omit the user's or the recipient's name, and pretend you are writing for the user. So start with 'I'. Don't include any variable name starting with []. The recipient is whom the user is talking to.
+        text: `The user is a young adult with language impairments and needs you to write a few sentences of expressing their feelings for them.
+        
+        The user is feeling "${emotionText}" at an intensity level of ${emotionIntensity} on a scale from 1 to 10, where 1 is very mild and 10 is very strong. They want to communicate with "${recipientText}" in the "${scenarioText}" context. ${additionalText}
 
-            With the emotion level, don't mention it in numbers like "8 out of 10" in the text, but use words to express how intense the emotion is.
-            
-            Also, write the sentence in a natural tone just like young adults nowadays within the scenarios. Don't be too concise. Be natural and address context to best express the user's feelings. 
-            
-            `
+        Write a considerate and clear text for the user directly with some details to explain their true intentions and feelings with potential causes in the situation, maintaining a genuine atmosphere. 
+        
+        Start the message with 'I' and write in a natural tone. Avoid using  numbers to describe the emotion intensity; instead, use descriptive language to convey the emotion strength based on the intensity level provided. Write directly for them so that they can read it directly. Don't add anything in the brackets.`
+
       }]
         }]
   };
