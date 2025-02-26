@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import Icon from 'react-native-vector-icons/FontAwesome';
 import { StyleSheet, View, Text, TextInput, Button, ScrollView, TouchableOpacity, FlatList, Clipboard, KeyboardAvoidingView, Platform} from 'react-native';
 import Slider from '@react-native-community/slider';
-import styles from './appStyles';
+import styles from '../appStyles';
 
-const GEMINI_API_KEY = 'YOUR_API_KEY';
+const GEMINI_API_KEY = 'AIzaSyBPbgUjqjpO-cWV61Zs6xeypo-dSz2sCnY';
 const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_API_KEY}`;
 
 function App() {
@@ -20,8 +21,11 @@ function App() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [loading, setLoading] = useState(false);
   const [additionalInput, setAdditionalInput] = useState('');
+  const [showDetailedEmotions, setShowDetailedEmotions] = useState(false);
+  
 
-  const emotions = ['Happy 😊', 'Sad 😢', 'Angry 😡', 'Scared 😨', 'Other'];
+  const emotions = ['Happy 😊', 'Sad 😢', 'Angry 😡', 'Worried 😨', 'Other'];
+  const detailedEmotions = ['Overwhelmed', 'Stressed', 'Anxious', 'Frustrated','Annoyed', 'Nervous'];
   const recipients = ['Friend', 'Family', 'Romantic interest', 'Peers', 'Other'];
   const scenarios = ['School', 'Home', 'Public places', 'Workplace', 'Online', 'Medical Settings', 'Other'];
 
@@ -52,7 +56,7 @@ function App() {
         Write a considerate and clear text for the user directly with some details to explain their true intentions and feelings with potential causes in the situation, maintaining a genuine atmosphere. 
         
         Start the message with 'I' and write in a natural tone. Avoid using  numbers to describe the emotion intensity; instead, use descriptive language to convey the emotion strength based on the intensity level provided. Write directly for them so that they can read it directly. Don't add anything in the brackets.`
-
+        
       }]
         }]
   };
@@ -88,7 +92,10 @@ function App() {
         <Text style={styles.header}>How are you feeling today?</Text>
 
       <View style={styles.sectionContainer}>
-        <Text style={styles.sectionTitle}>Emotions</Text>
+          <Text style={styles.sectionTitle}>Emotions</Text>
+          <TouchableOpacity onPress={() => setShowDetailedEmotions(!showDetailedEmotions)} style={styles.iconButton}>
+            <Icon name="plus" size={20} color="#007AFF" />
+            </TouchableOpacity>
           <FlatList
             data={emotions}
             renderItem={({ item }) => (
@@ -103,6 +110,22 @@ function App() {
             horizontal={false}
             numColumns={2}
           />
+          {showDetailedEmotions && (
+            <FlatList
+              data={detailedEmotions}
+              renderItem={({ item }) => (
+                <TouchableOpacity
+                  style={[styles.tag, selectedEmotion === item && styles.selectedTag]}
+                  onPress={() => setSelectedEmotion(item)}
+                >
+                  <Text style={styles.tagText}>{item}</Text>
+                </TouchableOpacity>
+              )}
+              keyExtractor={(item) => item}
+              horizontal={false}
+              numColumns={2}
+            />
+          )}
         {selectedEmotion === "Other" && (
           <TextInput
             style={styles.input}
@@ -111,7 +134,7 @@ function App() {
             onChangeText={setCustomEmotion}
           />
         )}
-        {selectedEmotion && selectedEmotion !== 'Other' && (
+        {(selectedEmotion !== '' || customEmotion) && (
           <>
             <Text style={styles.sliderLabel}>Level: {emotionIntensity}</Text>
             <Slider

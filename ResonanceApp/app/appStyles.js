@@ -37,7 +37,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
     },
     selectedTag: {
-        backgroundColor: '#add8e6', // Lighter blue
+        backgroundColor: '#87cefa', // Lighter blue
     },
     tagText: {
         fontSize: 16,
@@ -67,6 +67,10 @@ const styles = StyleSheet.create({
     slider: {
         width: '100%',
         height: 40,
+    },
+    iconButton: {
+        padding: 10,
+        alignSelf: 'flex-end',
     },
 });
 
