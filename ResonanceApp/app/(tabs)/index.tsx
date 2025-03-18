@@ -153,7 +153,7 @@ function App() {
       </View>
 
       <View style={styles.sectionContainer}>
-        <Text style={styles.sectionTitle}>Recipients</Text>
+        <Text style={styles.sectionTitle}>To Whom</Text>
           <FlatList
             data={recipients}
             renderItem={({ item }) => (
