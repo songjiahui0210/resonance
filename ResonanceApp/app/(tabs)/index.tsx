@@ -22,7 +22,8 @@ function App() {
   const [loading, setLoading] = useState(false);
   const [additionalInput, setAdditionalInput] = useState('');
   const [showDetailedEmotions, setShowDetailedEmotions] = useState(false);
-  const [selectedPurpose, setSelectedPurpose] = useState(''); // new state for user's purpose
+  const [selectedPurpose, setSelectedPurpose] = useState(''); // new state for user's selected purpose
+  const [customPurpose, setCustomPurpose] = useState(''); // new state for user's custom purpose
   
 
   const emotions = ['Happy 😊', 'Sad 😢', 'Angry 😡', 'Worried 😨', 'Other'];
@@ -31,7 +32,7 @@ function App() {
   const scenarios = ['School', 'Home', 'Public places', 'Workplace', 'Online', 'Medical Settings', 'Other'];
   const purposeOptions = ['Express feelings', 'Seek help', 'Other']; // new purpose options
 
-  
+
   const handleTagSelection = (tag: string, setter: { (value: React.SetStateAction<string>): void; (value: React.SetStateAction<string>): void; (value: React.SetStateAction<string>): void; (arg0: any): void; }, customSetter: { (value: React.SetStateAction<string>): void; (value: React.SetStateAction<string>): void; (value: React.SetStateAction<string>): void; (arg0: string): void; }) => {
     setter(tag);
     if (tag === 'Other') {
@@ -46,6 +47,7 @@ function App() {
     const scenarioText = customScenario || selectedScenario;
     const emotionText = customEmotion || selectedEmotion;
     const recipientText = customRecipient || selectedRecipient;
+    const purposeText = customPurpose || selectedPurpose; // new purpose text
     const additionalText = additionalInput ? ` Additional information: ${additionalInput}` : '';
     
 
@@ -54,7 +56,7 @@ function App() {
       parts: [{
         text: `The user is a young adult with language impairments and needs you to write a few sentences of expressing their feelings for them.
         
-        The user is feeling "${emotionText}" at an intensity level of ${emotionIntensity} on a scale from 1 to 10, where 1 is very mild and 10 is very strong. They want to communicate with "${recipientText}" in the "${scenarioText}" context. ${additionalText}
+        The user is feeling "${emotionText}" at an intensity level of ${emotionIntensity} on a scale from 1 to 10, where 1 is very mild and 10 is very strong. They want to communicate with "${recipientText}" in the "${scenarioText}" context. The purpose is to: ${purposeText}.${additionalText}
 
         Write a considerate and clear text for the user directly with some details to explain their true intentions and feelings with potential causes in the situation, maintaining a genuine atmosphere. 
         
