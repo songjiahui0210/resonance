@@ -179,7 +179,7 @@ function App() {
       </View>
 
       <View style={styles.sectionContainer}>
-        <Text style={styles.sectionTitle}>Scenarios</Text>
+        <Text style={styles.sectionTitle}>Where</Text>
           <FlatList
             data={scenarios}
             renderItem={({ item }) => (
