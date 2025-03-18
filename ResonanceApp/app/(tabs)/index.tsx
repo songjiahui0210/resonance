@@ -22,13 +22,16 @@ function App() {
   const [loading, setLoading] = useState(false);
   const [additionalInput, setAdditionalInput] = useState('');
   const [showDetailedEmotions, setShowDetailedEmotions] = useState(false);
+  const [selectedPurpose, setSelectedPurpose] = useState(''); // new state for user's purpose
   
 
   const emotions = ['Happy 😊', 'Sad 😢', 'Angry 😡', 'Worried 😨', 'Other'];
   const detailedEmotions = ['Overwhelmed', 'Stressed', 'Anxious', 'Frustrated','Annoyed', 'Nervous'];
   const recipients = ['Friend', 'Family', 'Romantic interest', 'Peers', 'Other'];
   const scenarios = ['School', 'Home', 'Public places', 'Workplace', 'Online', 'Medical Settings', 'Other'];
+  const purposeOptions = ['Express feelings', 'Seek help', 'Other']; // new purpose options
 
+  
   const handleTagSelection = (tag: string, setter: { (value: React.SetStateAction<string>): void; (value: React.SetStateAction<string>): void; (value: React.SetStateAction<string>): void; (arg0: any): void; }, customSetter: { (value: React.SetStateAction<string>): void; (value: React.SetStateAction<string>): void; (value: React.SetStateAction<string>): void; (arg0: string): void; }) => {
     setter(tag);
     if (tag === 'Other') {
