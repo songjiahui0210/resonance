@@ -209,6 +209,33 @@ function App() {
         )}
       </View>
 
+      {/* Purpose Section */}
+      <View style={styles.sectionContainer}>
+        <Text style={styles.sectionTitle}>Purpose</Text>
+        <FlatList
+          data={purposeOptions} // new data array for purpose
+          renderItem={({ item }) => (
+            <TouchableOpacity
+              style={[styles.tag, selectedPurpose === item && styles.selectedTag]} // new selectedPurpose
+              onPress={() => setSelectedPurpose(item)} // setSelectedPurpose for purpose selection
+            >
+              <Text style={styles.tagText}>{item}</Text>
+            </TouchableOpacity>
+          )}
+          keyExtractor={(item) => item}
+          horizontal={false}
+          numColumns={2}
+        />
+        {selectedPurpose === "Other" && (
+          <TextInput
+            style={styles.input}
+            placeholder="Type your purpose"
+            value={customPurpose} // new customPurpose input
+            onChangeText={setCustomPurpose} // new customPurpose setter
+          />
+        )}
+      </View>
+
 <Button
         title={loading ? 'Loading...' : 'Generate'}
         onPress={generateExpression}
