@@ -22,12 +22,16 @@ function App() {
   const [loading, setLoading] = useState(false);
   const [additionalInput, setAdditionalInput] = useState('');
   const [showDetailedEmotions, setShowDetailedEmotions] = useState(false);
+  const [selectedPurpose, setSelectedPurpose] = useState(''); // new state for user's selected purpose
+  const [customPurpose, setCustomPurpose] = useState(''); // new state for user's custom purpose
   
 
   const emotions = ['Happy 😊', 'Sad 😢', 'Angry 😡', 'Worried 😨', 'Other'];
   const detailedEmotions = ['Overwhelmed', 'Stressed', 'Anxious', 'Frustrated','Annoyed', 'Nervous'];
   const recipients = ['Friend', 'Family', 'Romantic interest', 'Peers', 'Other'];
   const scenarios = ['School', 'Home', 'Public places', 'Workplace', 'Online', 'Medical Settings', 'Other'];
+  const purposeOptions = ['Express feelings', 'Seek help', 'Other']; // new purpose options
+
 
   const handleTagSelection = (tag: string, setter: { (value: React.SetStateAction<string>): void; (value: React.SetStateAction<string>): void; (value: React.SetStateAction<string>): void; (arg0: any): void; }, customSetter: { (value: React.SetStateAction<string>): void; (value: React.SetStateAction<string>): void; (value: React.SetStateAction<string>): void; (arg0: string): void; }) => {
     setter(tag);
@@ -43,6 +47,7 @@ function App() {
     const scenarioText = customScenario || selectedScenario;
     const emotionText = customEmotion || selectedEmotion;
     const recipientText = customRecipient || selectedRecipient;
+    const purposeText = customPurpose || selectedPurpose; // new purpose text
     const additionalText = additionalInput ? ` Additional information: ${additionalInput}` : '';
     
 
@@ -51,7 +56,7 @@ function App() {
       parts: [{
         text: `The user is a young adult with language impairments and needs you to write a few sentences of expressing their feelings for them.
         
-        The user is feeling "${emotionText}" at an intensity level of ${emotionIntensity} on a scale from 1 to 10, where 1 is very mild and 10 is very strong. They want to communicate with "${recipientText}" in the "${scenarioText}" context. ${additionalText}
+        The user is feeling "${emotionText}" at an intensity level of ${emotionIntensity} on a scale from 1 to 10, where 1 is very mild and 10 is very strong. They want to communicate with "${recipientText}" in the "${scenarioText}" context. The purpose is to: ${purposeText}.${additionalText}
 
         Write a considerate and clear text for the user directly with some details to explain their true intentions and feelings with potential causes in the situation, maintaining a genuine atmosphere. 
         
@@ -153,7 +158,7 @@ function App() {
       </View>
 
       <View style={styles.sectionContainer}>
-        <Text style={styles.sectionTitle}>Recipients</Text>
+        <Text style={styles.sectionTitle}>To Whom</Text>
           <FlatList
             data={recipients}
             renderItem={({ item }) => (
@@ -179,7 +184,7 @@ function App() {
       </View>
 
       <View style={styles.sectionContainer}>
-        <Text style={styles.sectionTitle}>Scenarios</Text>
+        <Text style={styles.sectionTitle}>Where</Text>
           <FlatList
             data={scenarios}
             renderItem={({ item }) => (
@@ -200,6 +205,33 @@ function App() {
             placeholder="Type your scenario"
             value={customScenario}
             onChangeText={setCustomScenario}
+          />
+        )}
+      </View>
+
+      {/* Purpose Section */}
+      <View style={styles.sectionContainer}>
+        <Text style={styles.sectionTitle}>Purpose</Text>
+        <FlatList
+          data={purposeOptions} // new data array for purpose
+          renderItem={({ item }) => (
+            <TouchableOpacity
+              style={[styles.tag, selectedPurpose === item && styles.selectedTag]} // new selectedPurpose
+              onPress={() => setSelectedPurpose(item)} // setSelectedPurpose for purpose selection
+            >
+              <Text style={styles.tagText}>{item}</Text>
+            </TouchableOpacity>
+          )}
+          keyExtractor={(item) => item}
+          horizontal={false}
+          numColumns={2}
+        />
+        {selectedPurpose === "Other" && (
+          <TextInput
+            style={styles.input}
+            placeholder="Type your purpose"
+            value={customPurpose} // new customPurpose input
+            onChangeText={setCustomPurpose} // new customPurpose setter
           />
         )}
       </View>
