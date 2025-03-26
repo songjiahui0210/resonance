@@ -7,18 +7,40 @@ const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-
 
 function App() {
   const [selectedEmotion, setSelectedEmotion] = useState('');
+  const [selectedIntensity, setSelectedIntensity] = useState('');
   const [customEmotion, setCustomEmotion] = useState('');
   const [selectedRecipient, setSelectedRecipient] = useState('');
   const [customRecipient, setCustomRecipient] = useState('');
-  const [selectedScenario, setSelectedScenario] = useState('');
+  const [selectedScenarioCategory, setSelectedScenarioCategory] = useState('');
+  const [selectedScenarioSubcategory, setSelectedScenarioSubcategory] = useState('');
   const [customScenario, setCustomScenario] = useState('');
   type Message = { type: string; text: string };
   const [messages, setMessages] = useState<Message[]>([]);
   const [loading, setLoading] = useState(false);
 
-  const emotions = ['Happy 😊', 'Sad 😢', 'Angry 😡', 'Scared 😨', 'Other'];
+  const emotions = [
+    { label: 'Happy', emoji: '😊', intensity: ['Slightly', 'Moderately', 'Very'] },
+    { label: 'Sad', emoji: '😢', intensity: ['Slightly', 'Moderately', 'Very'] },
+    { label: 'Angry', emoji: '😡', intensity: ['Slightly', 'Moderately', 'Very'] },
+    { label: 'Scared', emoji: '😨', intensity: ['Slightly', 'Moderately', 'Very'] },
+    { label: 'Anxious', emoji: '😰', intensity: ['Slightly', 'Moderately', 'Very'] },
+    { label: 'Overwhelmed', emoji: '😫', intensity: ['Slightly', 'Moderately', 'Very'] },
+    { label: 'Frustrated', emoji: '😤', intensity: ['Slightly', 'Moderately', 'Very'] },
+    { label: 'Excited', emoji: '🤩', intensity: ['Slightly', 'Moderately', 'Very'] },
+    { label: 'Confused', emoji: '😕', intensity: ['Slightly', 'Moderately', 'Very'] },
+    { label: 'Calm', emoji: '😌', intensity: ['Slightly', 'Moderately', 'Very'] },
+    { label: 'Other', emoji: '🤔', intensity: [] }
+  ];
   const recipients = ['Friend', 'Family', 'Romantic interest', 'Peers', 'Other'];
-  const scenarios = ['School', 'Home', 'Public places', 'Workplace', 'Online', 'Medical Settings', 'Other'];
+  const scenarios = [
+    { category: 'School', subcategories: ['Classroom', 'Group Project', 'Test/Exam', 'Social Break', 'Lunch Break'] },
+    { category: 'Home', subcategories: ['Family Discussion', 'Personal Space', 'Routine Changes', 'Sensory Overload'] },
+    { category: 'Public Places', subcategories: ['Shopping', 'Restaurant', 'Transportation', 'Crowded Areas'] },
+    { category: 'Workplace', subcategories: ['Meeting', 'Task Management', 'Colleague Interaction', 'Deadline Pressure'] },
+    { category: 'Online', subcategories: ['Social Media', 'Online Class', 'Virtual Meeting', 'Texting'] },
+    { category: 'Medical Settings', subcategories: ['Doctor Visit', 'Therapy Session', 'Dental Visit', 'Waiting Room'] },
+    { category: 'Other', subcategories: [] }
+  ];
 
   const handleTagSelection = (tag: string, setter: { (value: React.SetStateAction<string>): void; (value: React.SetStateAction<string>): void; (value: React.SetStateAction<string>): void; (arg0: any): void; }, customSetter: { (value: React.SetStateAction<string>): void; (value: React.SetStateAction<string>): void; (value: React.SetStateAction<string>): void; (arg0: string): void; }) => {
     setter(tag);
@@ -29,14 +51,47 @@ function App() {
     }
   }
 
+  const handleEmotionSelection = (emotion: string) => {
+    setSelectedEmotion(emotion);
+    setSelectedIntensity('');
+    if (emotion === 'Other') {
+      setCustomEmotion('');
+    }
+  };
+
+  const handleIntensitySelection = (intensity: string) => {
+    setSelectedIntensity(intensity);
+  };
+
+  const handleScenarioSelection = (category: string) => {
+    setSelectedScenarioCategory(category);
+    setSelectedScenarioSubcategory('');
+  };
+
+  const handleScenarioSubcategorySelection = (subcategory: string) => {
+    setSelectedScenarioSubcategory(subcategory);
+  };
+
   const generateExpression = async () => {
     setLoading(true);
-    const scenarioText = customScenario || selectedScenario;
-    const emotionText = customEmotion || selectedEmotion;
+    const scenarioText = selectedScenarioSubcategory 
+      ? `${selectedScenarioCategory} - ${selectedScenarioSubcategory}`
+      : (selectedScenarioCategory || customScenario);
+    const emotionText = selectedIntensity ? `${selectedIntensity} ${customEmotion || selectedEmotion}` : (customEmotion || selectedEmotion);
     const recipientText = customRecipient || selectedRecipient;
 
     const prompt = {
-      contents: [{ parts: [{ text: `The user is a young adult with language impairments and needs you to help them complete a message of expressing the feelings. The user is feeling "${emotionText}" and wants to communicate with "${recipientText}" in the "${scenarioText}" context. The scenario contexts are where the conversations will be based. Generate a considerate and clear text that the user can use to explain his true intentions in the situation, promoting a better understanding and maintaining a genuine atmosphere. Omit the user's or the recipient's name, and pretend you are writing for the user. So start with 'I'. Don't include any variable name starting with []. The recipient is whom the user is talking to. Also, generate the sentence in a natural tone just like young adults nowadays. Don't be too concise. Be natural and address context.` }] }]
+      contents: [{ parts: [{ text: `The user is a young adult with ADHD and/or HFA who needs help expressing their feelings in a clear and constructive way. They are feeling "${emotionText}" and want to communicate with "${recipientText}" in the "${scenarioText}" context. Generate a considerate and clear message that:
+1. Uses concrete, specific language
+2. Includes context about why they feel this way
+3. Expresses their needs or boundaries clearly
+4. Maintains a constructive tone
+5. Includes coping strategies if relevant
+6. Uses natural, age-appropriate language
+7. Avoids abstract concepts
+8. Provides clear next steps or requests
+
+The message should be written in first person ("I") and be specific to the situation. Make it natural and conversational while being clear and direct.` }] }]
     };
 
     try {
@@ -58,25 +113,32 @@ function App() {
           <FlatList
             data={emotions}
             renderItem={({ item }) => (
-              <TouchableOpacity
-                style={[styles.tag, selectedEmotion === item && styles.selectedTag]}
-                onPress={() => handleTagSelection(item, setSelectedEmotion, setCustomEmotion)}
-              >
-                <Text style={styles.tagText}>{item}</Text>
-              </TouchableOpacity>
+              <View>
+                <TouchableOpacity
+                  style={[styles.tag, selectedEmotion === item.label && styles.selectedTag]}
+                  onPress={() => handleEmotionSelection(item.label)}
+                >
+                  <Text style={styles.tagText}>{item.label} {item.emoji}</Text>
+                </TouchableOpacity>
+                {selectedEmotion === item.label && item.intensity.length > 0 && (
+                  <View style={styles.intensityContainer}>
+                    {item.intensity.map((intensity) => (
+                      <TouchableOpacity
+                        key={intensity}
+                        style={[styles.intensityTag, selectedIntensity === intensity && styles.selectedIntensityTag]}
+                        onPress={() => handleIntensitySelection(intensity)}
+                      >
+                        <Text style={styles.intensityText}>{intensity}</Text>
+                      </TouchableOpacity>
+                    ))}
+                  </View>
+                )}
+              </View>
             )}
-            keyExtractor={(item) => item}
+            keyExtractor={(item) => item.label}
             horizontal={false}
             numColumns={2}
           />
-        {selectedEmotion === "Other" && (
-          <TextInput
-            style={styles.input}
-            placeholder="Type your emotion"
-            value={customEmotion}
-            onChangeText={setCustomEmotion}
-          />
-        )}
       </View>
 
       <View style={styles.sectionContainer}>
@@ -110,18 +172,33 @@ function App() {
           <FlatList
             data={scenarios}
             renderItem={({ item }) => (
-              <TouchableOpacity
-                style={[styles.tag, selectedScenario === item && styles.selectedTag]}
-                onPress={() => handleTagSelection(item, setSelectedScenario, setCustomScenario)}
-              >
-                <Text style={styles.tagText}>{item}</Text>
-              </TouchableOpacity>
+              <View>
+                <TouchableOpacity
+                  style={[styles.tag, selectedScenarioCategory === item.category && styles.selectedTag]}
+                  onPress={() => handleScenarioSelection(item.category)}
+                >
+                  <Text style={styles.tagText}>{item.category}</Text>
+                </TouchableOpacity>
+                {selectedScenarioCategory === item.category && item.subcategories.length > 0 && (
+                  <View style={styles.subcategoryContainer}>
+                    {item.subcategories.map((subcategory) => (
+                      <TouchableOpacity
+                        key={subcategory}
+                        style={[styles.subcategoryTag, selectedScenarioSubcategory === subcategory && styles.selectedSubcategoryTag]}
+                        onPress={() => handleScenarioSubcategorySelection(subcategory)}
+                      >
+                        <Text style={styles.subcategoryText}>{subcategory}</Text>
+                      </TouchableOpacity>
+                    ))}
+                  </View>
+                )}
+              </View>
             )}
-            keyExtractor={(item) => item}
+            keyExtractor={(item) => item.category}
             horizontal={false}
             numColumns={2}
           />
-        {selectedScenario === "Other" && (
+        {selectedScenarioCategory === "Other" && (
           <TextInput
             style={styles.input}
             placeholder="Type your scenario"
@@ -143,7 +220,7 @@ function App() {
       ))}
     </ScrollView>
   );
-};
+}
 
 const styles = StyleSheet.create({
   container: {
@@ -170,34 +247,65 @@ const styles = StyleSheet.create({
   },
   tag: {
     padding: 10,
-    margin: 5,
-    borderWidth: 1,
-    borderColor: '#ccc',
     borderRadius: 20,
-    backgroundColor: '#f9f9f9',
-    flex: 1,
+    backgroundColor: '#f0f0f0',
+    margin: 5,
     alignItems: 'center',
-    justifyContent: 'center',
   },
   selectedTag: {
-    backgroundColor: '#cceeff',
+    backgroundColor: '#007AFF',
   },
   tagText: {
     fontSize: 16,
   },
+  intensityContainer: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'center',
+    marginTop: 5,
+  },
+  intensityTag: {
+    padding: 5,
+    borderRadius: 15,
+    backgroundColor: '#e0e0e0',
+    margin: 2,
+  },
+  selectedIntensityTag: {
+    backgroundColor: '#0056b3',
+  },
+  intensityText: {
+    fontSize: 14,
+  },
+  subcategoryContainer: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'center',
+    marginTop: 5,
+  },
+  subcategoryTag: {
+    padding: 5,
+    borderRadius: 15,
+    backgroundColor: '#e0e0e0',
+    margin: 2,
+  },
+  selectedSubcategoryTag: {
+    backgroundColor: '#0056b3',
+  },
+  subcategoryText: {
+    fontSize: 14,
+  },
   input: {
-    width: '100%',
-    height: 40,
-    borderColor: 'gray',
     borderWidth: 1,
-    marginBottom: 20,
+    borderColor: '#ddd',
+    borderRadius: 5,
     padding: 10,
+    marginTop: 5,
   },
   message: {
-    marginTop: 20,
-    padding: 10,
-    borderWidth: 1,
-    borderColor: '#ccc',
+    padding: 15,
+    backgroundColor: '#f8f8f8',
+    borderRadius: 10,
+    marginTop: 10,
   },
   messageText: {
     fontSize: 16,
