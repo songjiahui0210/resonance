@@ -5,7 +5,7 @@ import { StyleSheet, View, Text, TextInput, Button, ScrollView, TouchableOpacity
 import Slider from '@react-native-community/slider';
 import styles from '../appStyles';
 
-const GEMINI_API_KEY = 'AIzaSyBPbgUjqjpO-cWV61Zs6xeypo-dSz2sCnY';
+const GEMINI_API_KEY = 'AIzaSyBb0WL25dnSdt25brIgqVbmBgb1BF7Rv58';
 const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_API_KEY}`;
 
 function App() {

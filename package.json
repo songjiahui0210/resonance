@@ -1,5 +1,11 @@
 {
   "dependencies": {
-    "@react-native-community/slider": "^4.5.5"
+    "@react-native-community/slider": "^4.5.5",
+    "axios": "^1.8.3",
+    "expo": "^52.0.38"
+  },
+  "devDependencies": {
+    "typescript": "^5.3.3",
+    "@types/react": "^19.0.0"
   }
 }
