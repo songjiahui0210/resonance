@@ -40,7 +40,7 @@ You can:
 - Read it on screen
 - Tap **Copy** to copy it to your clipboard
 
-## 🔁 Need a Different Version?
+### 🔁 Need a Different Version?
 
 Tap **“Give me another try”** to regenerate a new version of the message.
 
