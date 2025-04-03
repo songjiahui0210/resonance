@@ -1,10 +1,9 @@
-// express-better/context.ts
 import { 
   ExpressionRefinementInput, 
   ExpressionAnalysis, 
   SocialSituation, 
   SocialAnalysis 
-} from './types';
+} from '@/app/(tabs)/express-better/utils/types';
 import { useState } from 'react';
 
 // Initialize Gemini
@@ -14,7 +13,12 @@ if (!apiKey) {
   throw new Error('EXPO_PUBLIC_GEMINI_API_KEY is not set in environment variables');
 }
 
-const API_ENDPOINT = 'https://generativelanguage.googleapis.com/v1/models/gemini-1.5-pro-002:generateContent';
+const API_ENDPOINT = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent';
+
+const headers = {
+  'Content-Type': 'application/json',
+  'x-goog-api-key': apiKey
+};
 
 const refineExpressionPrompt = (input: ExpressionRefinementInput) => `
 You are a supportive communication coach helping someone with ADHD/High Functioning Autism express themselves better. Analyze their message with empathy and provide detailed, constructive feedback.
@@ -119,11 +123,7 @@ Provide a detailed analysis in this exact JSON format:
 }`;
 
 async function makeGeminiRequest(prompt: string) {
-  const headers: Record<string, string> = {
-    'Content-Type': 'application/json'
-  };
-
-  const response = await fetch(`${API_ENDPOINT}?key=${apiKey}`, {
+  const response = await fetch(API_ENDPOINT, {
     method: 'POST',
     headers,
     body: JSON.stringify({
@@ -199,5 +199,4 @@ export const useExpressionRefinement = () => {
     isLoading,
     error,
   };
-};
-
+}; 

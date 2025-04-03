@@ -14,9 +14,11 @@ import {
   ExpressionRefinementInput,
   ExpressionAnalysis,
   AnalysisSection,
-  AnalysisState
-} from './types';
-import { refineExpression, useExpressionRefinement } from './context';
+  AnalysisState,
+  ToneFeedback,
+  ClarityFeedback
+} from '@/app/(tabs)/express-better/utils/types';
+import { refineExpression, useExpressionRefinement } from '@/app/(tabs)/express-better/utils/context';
 import { 
   TextInput, 
   Button, 
@@ -228,7 +230,7 @@ export default function ExpressBetterScreen() {
             <Text style={styles.sectionContent}>{expressionAnalysis.messageBreakdown.mainIdea}</Text>
             
             <Text style={styles.sectionTitle}>Key Points to Include</Text>
-            {expressionAnalysis.messageBreakdown.supportingPoints.map((point, index) => (
+            {expressionAnalysis.messageBreakdown.supportingPoints.map((point: string, index: number) => (
               <Text key={index} style={styles.sectionContent}>• {point}</Text>
             ))}
             
@@ -242,7 +244,7 @@ export default function ExpressBetterScreen() {
         icon: "bulb-outline",
         content: (
           <Card.Content>
-            {expressionAnalysis.communicationFeedback.toneFeedback.map((feedback, index) => (
+            {expressionAnalysis.communicationFeedback.toneFeedback.map((feedback: ToneFeedback, index: number) => (
               <View key={index} style={styles.feedbackSection}>
                 <Text style={styles.sectionTitle}>How Your Tone Comes Across</Text>
                 <Text style={styles.sectionContent}>What we noticed: {feedback.whatWeNoticed}</Text>
@@ -251,7 +253,7 @@ export default function ExpressBetterScreen() {
               </View>
             ))}
 
-            {expressionAnalysis.communicationFeedback.clarityFeedback.map((feedback, index) => (
+            {expressionAnalysis.communicationFeedback.clarityFeedback.map((feedback: ClarityFeedback, index: number) => (
               <View key={index} style={styles.feedbackSection}>
                 <Text style={styles.sectionTitle}>Making Your Message Clearer</Text>
                 <Text style={styles.sectionContent}>What might be unclear: {feedback.unclearPart}</Text>
@@ -321,7 +323,7 @@ export default function ExpressBetterScreen() {
                 disabled={currentCardIndex === 0}
                 style={styles.navButton}
               >
-                Previous
+                <Text>Previous</Text>
               </Button>
               <Button
                 mode="contained"
@@ -334,7 +336,7 @@ export default function ExpressBetterScreen() {
                 }}
                 style={styles.navButton}
               >
-                {currentCardIndex === cards.length - 1 ? 'View All' : 'Next'}
+                <Text>{currentCardIndex === cards.length - 1 ? 'View All' : 'Next'}</Text>
               </Button>
             </View>
           </>
@@ -347,7 +349,7 @@ export default function ExpressBetterScreen() {
                 icon="arrow-left"
                 style={styles.backButton}
               >
-                Back to Cards
+                <Text>Back to Cards</Text>
               </Button>
             </View>
             <ScrollView style={styles.scrollView}>
@@ -406,7 +408,7 @@ export default function ExpressBetterScreen() {
           icon="plus"
           style={styles.startButton}
         >
-          Start Expressing Better
+          <Text>Start Expressing Better</Text>
         </Button>
       </View>
     </ScrollView>
