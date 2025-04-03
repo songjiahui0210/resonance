@@ -5,9 +5,15 @@ import { StyleSheet, View, Text, TextInput, Button, ScrollView, TouchableOpacity
 import Slider from '@react-native-community/slider';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import * as Clipboard from 'expo-clipboard';
+import Constants from 'expo-constants';
 
-const GEMINI_API_KEY = 'YOUR_API_KEY';
-const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${GEMINI_API_KEY}`;
+const apiKey = Constants.expoConfig?.extra?.geminiApiKey;
+
+if (!apiKey) {
+  throw new Error('GEMINI_API_KEY is not set in app.config.js');
+}
+
+const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
 
 type TagCategory = 'emotion' | 'recipient' | 'scenario' | 'purpose';
 

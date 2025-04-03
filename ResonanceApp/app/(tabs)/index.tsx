@@ -19,9 +19,8 @@ export default function HomeScreen() {
                     resizeMode="contain"
                 />
             </View>
-
             <View style={styles.buttonContainer}>
-                <Link href="/ExpressionGenerator" asChild>
+                <Link href="./ExpressionGenerator" asChild>
                     <TouchableOpacity style={styles.button}>
                         <View style={styles.buttonContent}>
                             <FontAwesome name="bullhorn" size={24} color="#2c3e50" style={styles.buttonIcon} />
@@ -35,7 +34,7 @@ export default function HomeScreen() {
                     </TouchableOpacity>
                 </Link>
 
-                <Link href="/ExpressBetter" asChild>
+                <Link href="./ExpressBetter" asChild>
                     <TouchableOpacity style={styles.button}>
                         <View style={styles.buttonContent}>
                             <FontAwesome name="comment" size={24} color="#2c3e50" style={styles.buttonIcon} />
