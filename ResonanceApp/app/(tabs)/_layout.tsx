@@ -1,40 +1,37 @@
 import { Tabs } from 'expo-router';
-import { Platform } from 'react-native';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { useColorScheme } from '@/hooks/useColorScheme';
+import React from 'react';
+import { FontAwesome } from '@expo/vector-icons';
 
 export default function TabLayout() {
-  const colorScheme = useColorScheme();
-
   return (
-    <Tabs
-      screenOptions={{
-        tabBarActiveTintColor: colorScheme === 'dark' ? '#fff' : '#000',
-        tabBarInactiveTintColor: colorScheme === 'dark' ? '#666' : '#999',
-        headerShown: false,
-        tabBarStyle: Platform.select({
-          ios: {
-            position: 'absolute',
-          },
-          default: {},
-        }),
-      }}>
+    <Tabs screenOptions={{
+      headerShown: false,
+      tabBarActiveTintColor: '#4a90e2',
+      tabBarInactiveTintColor: '#8e8e93',
+      tabBarStyle: {
+        backgroundColor: '#f8f9fa',
+        borderTopColor: '#e0e0e0',
+      },
+    }}>
       <Tabs.Screen
         name="index"
         options={{
           title: 'Home',
-          tabBarIcon: ({ color }) => (
-            <MaterialCommunityIcons name="home" size={24} color={color} />
-          ),
+          tabBarIcon: ({ color, size }) => <FontAwesome name="home" size={size} color={color} />,
         }}
       />
       <Tabs.Screen
-        name="express-better"
+        name="ExpressionGenerator"
+        options={{
+          title: 'Say For Me',
+          tabBarIcon: ({ color, size }) => <FontAwesome name="bullhorn" size={size} color={color} />,
+        }}
+      />
+      <Tabs.Screen
+        name="ExpressBetter"
         options={{
           title: 'Express Better',
-          tabBarIcon: ({ color }) => (
-            <MaterialCommunityIcons name="heart" size={24} color={color} />
-          ),
+          tabBarIcon: ({ color, size }) => <FontAwesome name="comment" size={size} color={color} />,
         }}
       />
     </Tabs>
