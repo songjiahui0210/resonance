@@ -14,13 +14,6 @@ export default function TabLayout() {
       },
     }}>
       <Tabs.Screen
-        name="index"
-        options={{
-          title: 'Home',
-          tabBarIcon: ({ color, size }) => <FontAwesome name="home" size={size} color={color} />,
-        }}
-      />
-      <Tabs.Screen
         name="ExpressionGenerator"
         options={{
           title: 'Say For Me',
@@ -28,7 +21,7 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="ExpressBetter"
+        name="express-better"
         options={{
           title: 'Express Better',
           tabBarIcon: ({ color, size }) => <FontAwesome name="comment" size={size} color={color} />,
