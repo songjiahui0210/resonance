@@ -42,6 +42,7 @@ import Animated, {
   useSharedValue,
 } from 'react-native-reanimated';
 import { BottomSheetModal, BottomSheetBackdrop, BottomSheetBackdropProps, BottomSheetView, BottomSheetModalProvider } from '@gorhom/bottom-sheet';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 const { width } = Dimensions.get('window');
 
@@ -76,7 +77,7 @@ export default function ExpressBetterScreen() {
   const fadeAnim = useSharedValue(0);
   const slideAnim = useSharedValue(20);
 
-  const snapPoints = useMemo(() => ['50%', '90%'], []);
+  const snapPoints = useMemo(() => ['60%', '90%'], []);
   const [bottomSheetIndex, setBottomSheetIndex] = useState(0);
   const [currentCardIndex, setCurrentCardIndex] = useState(0);
   const [showAllCards, setShowAllCards] = useState(false);
@@ -105,11 +106,17 @@ export default function ExpressBetterScreen() {
   }, []);
 
   const showModal = useCallback(() => {
-    setIsModalVisible(true);
+    if (bottomSheetRef.current) {
+      bottomSheetRef.current.present();
+      setIsBottomSheetVisible(true);
+    }
   }, []);
 
   const hideModal = useCallback(() => {
-    setIsModalVisible(false);
+    if (bottomSheetRef.current) {
+      bottomSheetRef.current.dismiss();
+      setIsBottomSheetVisible(false);
+    }
   }, []);
 
   // Expression Refinement Handler
@@ -205,14 +212,21 @@ export default function ExpressBetterScreen() {
     <Animated.View 
       entering={FadeIn}
       exiting={FadeOut}
-      style={styles.cardContainer}
+      style={[styles.cardContainer, { marginHorizontal: 8 }]}
     >
       <Card style={styles.card}>
         <Card.Title
           title={title}
-          left={(props: any) => <IconButton {...props} icon={icon} />}
+          titleStyle={{ fontSize: 16 }}
+          left={(props: any) => <IconButton {...props} icon={icon} size={20} />}
         />
-        {content}
+        <ScrollView 
+          style={styles.cardScrollView}
+          contentContainerStyle={styles.cardScrollViewContent}
+          showsVerticalScrollIndicator={true}
+        >
+          {content}
+        </ScrollView>
       </Card>
     </Animated.View>
   );
@@ -225,7 +239,7 @@ export default function ExpressBetterScreen() {
         title: "Understanding Your Message",
         icon: "chatbubble-outline",
         content: (
-          <Card.Content>
+          <>
             <Text style={styles.sectionTitle}>What You Want to Say</Text>
             <Text style={styles.sectionContent}>{expressionAnalysis.messageBreakdown.mainIdea}</Text>
             
@@ -236,14 +250,14 @@ export default function ExpressBetterScreen() {
             
             <Text style={styles.sectionTitle}>What You Want to Happen</Text>
             <Text style={styles.sectionContent}>{expressionAnalysis.messageBreakdown.actionNeeded}</Text>
-          </Card.Content>
+          </>
         )
       },
       {
         title: "Helping Your Message Land Well",
         icon: "bulb-outline",
         content: (
-          <Card.Content>
+          <>
             {expressionAnalysis.communicationFeedback.toneFeedback.map((feedback: ToneFeedback, index: number) => (
               <View key={index} style={styles.feedbackSection}>
                 <Text style={styles.sectionTitle}>How Your Tone Comes Across</Text>
@@ -261,14 +275,14 @@ export default function ExpressBetterScreen() {
                 <Text style={styles.sectionContent}>How to make it clearer: {feedback.clearerWay}</Text>
               </View>
             ))}
-          </Card.Content>
+          </>
         )
       },
       {
         title: "Helping Your Feelings Land Well",
         icon: "heart-outline",
         content: (
-          <Card.Content>
+          <>
             <Text style={styles.sectionTitle}>Understanding Your Feelings</Text>
             <Text style={styles.sectionContent}>{expressionAnalysis.emotionalGuidance.emotionalAwareness.yourFeeling}</Text>
             <Text style={styles.sectionContent}>Why you might feel this way: {expressionAnalysis.emotionalGuidance.emotionalAwareness.understandingWhy}</Text>
@@ -278,19 +292,19 @@ export default function ExpressBetterScreen() {
             <Text style={styles.sectionContent}>What makes this challenging: {expressionAnalysis.emotionalGuidance.balancedExpression.challenge}</Text>
             <Text style={styles.sectionContent}>Your feelings are valid: {expressionAnalysis.emotionalGuidance.balancedExpression.validation}</Text>
             <Text style={styles.sectionContent}>A way to express this: {expressionAnalysis.emotionalGuidance.balancedExpression.betterApproach}</Text>
-          </Card.Content>
+          </>
         )
       },
       {
         title: "A Way to Say It",
         icon: "checkmark-circle-outline",
         content: (
-          <Card.Content>
+          <>
             <Text style={styles.sectionTitle}>Here's a way to express this</Text>
             <Text style={styles.sectionContent}>{expressionAnalysis.improvedVersion.suggestion}</Text>
             <Text style={styles.sectionTitle}>Why this might work better</Text>
             <Text style={styles.sectionContent}>{expressionAnalysis.improvedVersion.explanation}</Text>
-          </Card.Content>
+          </>
         )
       }
     ];
@@ -442,59 +456,66 @@ export default function ExpressBetterScreen() {
   );
 
   return (
-    <BottomSheetModalProvider>
-      <View style={styles.container}>
-        <KeyboardAvoidingView 
-          behavior={Platform.OS === "ios" ? "padding" : "height"}
-          style={styles.container}
-        >
-          <Surface style={styles.header}>
-            <View style={styles.headerContent}>
-              <View style={styles.titleContainer}>
-                <Text style={styles.headerTitle}>Express</Text>
-                <Text style={styles.headerSubtitle}>Better</Text>
-              </View>
-              <Button
-                mode="contained"
-                onPress={showModal}
-                icon="plus"
-                style={styles.addButton}
-              >
-                New Message
-              </Button>
-            </View>
-          </Surface>
-
-          {expressionAnalysis ? (
-            renderAnalysis()
-          ) : (
-            renderEmptyState()
-          )}
-
-          <Modal
-            visible={isModalVisible}
-            onDismiss={hideModal}
-            contentContainerStyle={styles.modalContent}
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <BottomSheetModalProvider>
+        <View style={styles.container}>
+          <KeyboardAvoidingView 
+            behavior={Platform.OS === "ios" ? "padding" : "height"}
+            style={styles.container}
           >
-            <View style={styles.modalHeader}>
-              <Text style={styles.modalTitle}>New Message</Text>
-              <IconButton
-                icon="close"
-                size={24}
-                onPress={hideModal}
-              />
-            </View>
-            <ScrollView 
-              style={styles.scrollView}
-              contentContainerStyle={styles.scrollViewContent}
-              keyboardShouldPersistTaps="handled"
+            <Surface style={styles.header}>
+              <View style={styles.headerContent}>
+                <View style={styles.titleContainer}>
+                  <Text style={styles.headerTitle}>Express</Text>
+                  <Text style={styles.headerSubtitle}>Better</Text>
+                </View>
+                <Button
+                  mode="contained"
+                  onPress={showModal}
+                  icon="plus"
+                  style={styles.addButton}
+                >
+                  New Message
+                </Button>
+              </View>
+            </Surface>
+
+            {expressionAnalysis ? (
+              renderAnalysis()
+            ) : (
+              renderEmptyState()
+            )}
+
+            <BottomSheetModal
+              ref={bottomSheetRef}
+              index={0}
+              snapPoints={snapPoints}
+              onChange={handleSheetChanges}
+              backdropComponent={renderBackdrop}
+              handleIndicatorStyle={styles.handleIndicator}
             >
-              {renderInputForm()}
-            </ScrollView>
-          </Modal>
-        </KeyboardAvoidingView>
-      </View>
-    </BottomSheetModalProvider>
+              <BottomSheetView style={styles.modalContent}>
+                <View style={styles.modalHeader}>
+                  <Text style={styles.modalTitle}>New Message</Text>
+                  <IconButton
+                    icon="close"
+                    size={24}
+                    onPress={hideModal}
+                  />
+                </View>
+                <ScrollView 
+                  style={styles.scrollView}
+                  contentContainerStyle={styles.scrollViewContent}
+                  keyboardShouldPersistTaps="handled"
+                >
+                  {renderInputForm()}
+                </ScrollView>
+              </BottomSheetView>
+            </BottomSheetModal>
+          </KeyboardAvoidingView>
+        </View>
+      </BottomSheetModalProvider>
+    </GestureHandlerRootView>
   );
 }
 
@@ -518,13 +539,13 @@ const styles = StyleSheet.create({
     alignItems: 'baseline',
   },
   headerTitle: {
-    fontSize: 28,
+    fontSize: 24,
     fontWeight: 'bold',
     color: '#2196f3',
     marginRight: 4,
   },
   headerSubtitle: {
-    fontSize: 28,
+    fontSize: 24,
     fontWeight: 'bold',
     color: '#1976d2',
   },
@@ -541,7 +562,7 @@ const styles = StyleSheet.create({
     padding: 20,
   },
   emptyStateTitle: {
-    fontSize: 24,
+    fontSize: 22,
     fontWeight: 'bold',
     marginTop: 16,
     textAlign: 'center',
@@ -606,9 +627,9 @@ const styles = StyleSheet.create({
   },
   modalContent: {
     backgroundColor: '#fff',
-    margin: 20,
+    margin: 0,
     borderRadius: 12,
-    maxHeight: '80%',
+    flex: 1,
   },
   modalHeader: {
     flexDirection: 'row',
@@ -666,6 +687,7 @@ const styles = StyleSheet.create({
   analysisContainer: {
     flex: 1,
     padding: 16,
+    width: '100%',
   },
   progressContainer: {
     paddingHorizontal: 16,
@@ -688,27 +710,30 @@ const styles = StyleSheet.create({
   cardContainer: {
     marginBottom: 16,
     marginTop: 8,
+    width: '100%',
   },
   card: {
     borderRadius: 12,
     elevation: 2,
+    backgroundColor: '#fff',
+    height: 400,
   },
   handleIndicator: {
     backgroundColor: '#DEDEDE',
     width: 40,
   },
   sectionTitle: {
-    fontSize: 18,
+    fontSize: 16,
     fontWeight: '600',
-    marginTop: 16,
-    marginBottom: 8,
+    marginTop: 12,
+    marginBottom: 6,
     color: '#333',
   },
   sectionContent: {
-    fontSize: 16,
-    lineHeight: 24,
+    fontSize: 14,
+    lineHeight: 20,
     color: '#666',
-    marginBottom: 12,
+    marginBottom: 10,
   },
   feedbackSection: {
     marginBottom: 16,
@@ -728,5 +753,11 @@ const styles = StyleSheet.create({
   },
   backButton: {
     alignSelf: 'flex-start',
+  },
+  cardScrollView: {
+    maxHeight: 300,
+  },
+  cardScrollViewContent: {
+    padding: 16,
   },
 });

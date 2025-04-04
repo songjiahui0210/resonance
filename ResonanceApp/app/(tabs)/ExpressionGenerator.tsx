@@ -162,6 +162,7 @@ export default function ExpressionGenerator() {
               keyExtractor={(item) => item}
               horizontal={false}
               numColumns={2}
+              removeClippedSubviews={false}
             />
             {showDetailedEmotions && (
               <FlatList
@@ -177,6 +178,7 @@ export default function ExpressionGenerator() {
                 keyExtractor={(item) => item}
                 horizontal={false}
                 numColumns={2}
+                removeClippedSubviews={false}
               />
             )}
             {selectedEmotion === "Other" && (
@@ -220,6 +222,7 @@ export default function ExpressionGenerator() {
               keyExtractor={(item) => item}
               horizontal={false}
               numColumns={2}
+              removeClippedSubviews={false}
             />
             {selectedRecipient === "Other" && (
               <TextInput
@@ -246,6 +249,7 @@ export default function ExpressionGenerator() {
               keyExtractor={(item) => item}
               horizontal={false}
               numColumns={2}
+              removeClippedSubviews={false}
             />
             {selectedScenario === "Other" && (
               <TextInput
@@ -277,6 +281,7 @@ export default function ExpressionGenerator() {
               keyExtractor={(item) => item}
               horizontal={false}
               numColumns={2}
+              removeClippedSubviews={false}
             />
             {selectedPurpose === "Other" && (
               <TextInput

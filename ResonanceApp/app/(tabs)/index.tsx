@@ -27,21 +27,21 @@ export default function HomeScreen() {
                             <View style={styles.buttonTextContainer}>
                                 <Text style={styles.buttonText}>Say For Me</Text>
                                 <Text style={styles.buttonDescription}>
-                                    Generate expressions to communicate your feelings
+                                    generate expressions to communicate your feelings
                                 </Text>
                             </View>
                         </View>
                     </TouchableOpacity>
                 </Link>
 
-                <Link href="./ExpressBetter" asChild>
+                <Link href="./express-better/express-better" asChild>
                     <TouchableOpacity style={styles.button}>
                         <View style={styles.buttonContent}>
                             <FontAwesome name="comment" size={24} color="#2c3e50" style={styles.buttonIcon} />
                             <View style={styles.buttonTextContainer}>
                                 <Text style={styles.buttonText}>Express Better</Text>
                                 <Text style={styles.buttonDescription}>
-                                    Improve how you express yourself in various contexts
+                                    find the right words for you thoughts and say what you feel-no stress, no second guessing!
                                 </Text>
                             </View>
                         </View>

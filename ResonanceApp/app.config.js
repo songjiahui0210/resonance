@@ -17,7 +17,8 @@ module.exports = {
       "**/*"
     ],
     ios: {
-      supportsTablet: true
+      supportsTablet: true,
+      bundleIdentifier: "com.resonance.app"
     },
     android: {
       adaptiveIcon: {
@@ -31,7 +32,10 @@ module.exports = {
       favicon: "./assets/images/favicon.png"
     },
     extra: {
-      geminiApiKey: process.env.EXPO_PUBLIC_GEMINI_API_KEY
+      geminiApiKey: process.env.EXPO_PUBLIC_GEMINI_API_KEY,
+      eas: {
+        projectId: "0a0a59f4-4414-4fa6-9f8f-5141e160a34a"
+      }
     },
     plugins: [
       [
