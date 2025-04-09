@@ -34,7 +34,7 @@ export default function HomeScreen() {
                     </TouchableOpacity>
                 </Link>
 
-                <Link href="./express-better/express-better" asChild>
+                <Link href="./ExpressBetter" asChild>
                     <TouchableOpacity style={styles.button}>
                         <View style={styles.buttonContent}>
                             <FontAwesome name="comment" size={24} color="#2c3e50" style={styles.buttonIcon} />

@@ -3,7 +3,7 @@ import {
   ExpressionAnalysis, 
   SocialSituation, 
   SocialAnalysis 
-} from '@/app/(tabs)/express-better/utils/types';
+} from '@/app/(tabs)/types';
 import { useState } from 'react';
 
 // Initialize Gemini

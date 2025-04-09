@@ -28,7 +28,7 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="express-better/express-better"
+        name="ExpressBetter"
         options={{
           title: 'Express Better',
           tabBarIcon: ({ color, size }) => <FontAwesome name="comment" size={size} color={color} />,
